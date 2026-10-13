@@ -1,0 +1,27 @@
+{
+  // compilerOptions：TypeScript 编译器的核心配置项
+  "compilerOptions": {
+    "target": "ES2017",          // 编译目标：把 TS 转成 ES2017 语法，兼容绝大多数现代浏览器
+    "lib": ["dom", "dom.iterable", "esnext"], // 可用的标准库类型：浏览器 DOM + 最新 JS 语言特性
+    "allowJs": true,             // 允许在 TS 项目里直接引入 .js 文件，不至于报错
+    "skipLibCheck": true,        // 跳过对第三方库 .d.ts 的类型检查，加快构建、减少无关报错
+    "strict": true,              // 开启严格模式：强制写全类型、禁止隐式 any，帮我们少写 bug
+    "noEmit": true,              // 不输出编译后的 JS 文件（Next 自己负责打包，TS 只做类型检查）
+    "esModuleInterop": true,     // 让 import 默认导出更宽松，兼容 CommonJS 模块写法
+    "module": "esnext",          // 模块系统用最新的 ES Module（import / export 语法）
+    "moduleResolution": "bundler", // 模块解析策略：配合打包器（Next/webpack）的查找规则
+    "resolveJsonModule": true,   // 允许直接 import 一个 .json 文件并当成模块使用
+    "isolatedModules": true,     // 每个文件独立编译，兼容单文件转译工具（如 Babel / SWC）
+    "jsx": "preserve",           // JSX 原样保留，交给 Next.js 去处理（不提前编译成 React.createElement）
+    "incremental": true,         // 增量编译：只重新检查改动的文件，提升 tsc 速度
+    "plugins": [{ "name": "next" }], // 启用 Next.js 官方 TS 插件，提供路由 / 图片等专用提示
+    // paths：路径别名。把 "@/xxx" 映射到项目根目录下的 "./xxx"。
+    // 为什么：写 import 时不用写 "../../../components/xxx" 这种又长又易错的相对路径，
+    //   改成 import X from "@/components/xxx" 既干净又不受文件层级变化影响。
+    "paths": { "@/*": ["./*"] }
+  },
+  // include：TS 需要类型检查哪些文件
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", ".next-dev/types/**/*.ts"],
+  // exclude：明确跳过 node_modules，不检查第三方依赖
+  "exclude": ["node_modules"]
+}

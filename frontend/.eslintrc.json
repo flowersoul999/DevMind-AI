@@ -1,0 +1,6 @@
+{
+  // extends：继承一套现成的规则集，不用自己从零写所有规则。
+  // "next/core-web-vitals" 是 Next.js 官方推荐规则：重点检查页面性能与可访问性（Core Web Vitals），
+  //   它内部已包含 eslint:recommended + React 相关规则，开箱即用。
+  "extends": "next/core-web-vitals"
+}
