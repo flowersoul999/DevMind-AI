@@ -1,0 +1,155 @@
+/* 这三条是 Tailwind 的「注入指令」，构建时会被替换成真正的 CSS：
+   - base：浏览器样式重置 + Tailwind 的基础默认样式（类似 normalize.css）
+   - components：组件类（用 @apply 定义的那种）
+   - utilities：工具类（如 p-4、text-center 这种一行式类名）
+   为什么用 Tailwind：它像一套现成积木，写 class 就能拼样式，不用自己写大量 CSS。 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 让 html 和 body 至少撑满整个视口高度，方便做满屏布局 */
+html,
+body {
+  min-height: 100%; /* 最小高度为 100%，内容少时也能占满一屏 */
+}
+
+/* 全局文字颜色和页面背景色（与 tailwind.config 里的 ink / panel 相呼应） */
+body {
+  color: #17212b; /* 正文默认用深墨蓝灰，护眼又清晰 */
+  background: #f4f6f7; /* 整体背景用极浅灰，比纯白更柔和 */
+}
+
+/* 让表单元素（按钮 / 输入框 / 下拉 / 文本域）继承页面字体，
+   而不是用浏览器默认的丑字体 */
+button,
+input,
+select,
+textarea {
+  font: inherit; /* 继承父级字体设置，保持全站字体统一 */
+}
+
+/* 选中文字时的高亮样式（鼠标拖蓝选中） */
+::selection {
+  color: #ffffff; /* 选中文字变白 */
+  background: #0f766e; /* 选中背景变成品牌青绿色 */
+}
+
+/* 代码块 <pre> 内容过长时的处理 */
+pre {
+  white-space: pre-wrap; /* 保留空白符但允许自动换行，避免横向溢出 */
+  word-break: break-word; /* 超长单词 / 链接可以断开换行 */
+}
+
+/* 以下是 Markdown 渲染内容的样式（AI 回复常是 Markdown 格式）。
+   .markdown-body 是包裹 Markdown 的外层容器类名。 */
+.markdown-body {
+  display: grid; /* 用网格布局纵向排列各段落 */
+  gap: 0.65rem; /* 段落之间留点间距 */
+}
+
+/* 这些块级元素在 Markdown 容器内取消默认外边距，由外层 grid 的 gap 统一控制间距 */
+.markdown-body :where(p, ul, ol, pre, blockquote, table) {
+  margin: 0;
+}
+
+/* 标题（h1~h3）的统一样式 */
+.markdown-body :where(h1, h2, h3) {
+  margin: 0.15rem 0 0; /* 顶部留一点点间距 */
+  font-weight: 700; /* 加粗 */
+  line-height: 1.35; /* 行高紧凑一些 */
+  color: #17212b; /* 标题用主文字色 */
+}
+
+/* 各级标题字号（级别越高字号越小） */
+.markdown-body h1 {
+  font-size: 1.15rem;
+}
+.markdown-body h2 {
+  font-size: 1.05rem;
+}
+.markdown-body h3 {
+  font-size: 0.98rem;
+}
+
+/* 列表左侧内边距，给项目符号 / 序号留位置 */
+.markdown-body :where(ul, ol) {
+  padding-left: 1.25rem;
+}
+
+/* 无序列表用圆点，有序列表用数字 */
+.markdown-body ul {
+  list-style: disc;
+}
+.markdown-body ol {
+  list-style: decimal;
+}
+
+/* 相邻的两个列表项之间留点间距，更透气 */
+.markdown-body li + li {
+  margin-top: 0.25rem;
+}
+
+/* 行内代码（如 `code`）样式：浅底圆角小字 */
+.markdown-body code {
+  border-radius: 0.25rem; /* 小圆角 */
+  background: #f2eee8; /* 暖浅底，区别于正文 */
+  padding: 0.08rem 0.3rem; /* 上下左右内边距，让底色包住文字 */
+  font-size: 0.88em; /* 比正文略小 */
+}
+
+/* 代码块（<pre>）样式：带边框、可横向滚动、浅暖底 */
+.markdown-body pre {
+  overflow: auto; /* 内容超宽时出现滚动条而不是撑破布局 */
+  border: 1px solid #dde5ea; /* 浅灰蓝边框 */
+  border-radius: 0.5rem; /* 圆角 */
+  background: #fbf7f2; /* 暖白底 */
+  padding: 0.75rem; /* 内边距，文字不贴边 */
+}
+
+/* 代码块里的行内 code 不再单独加底色 / 内边距，避免双重背景 */
+.markdown-body pre code {
+  background: transparent; /* 透明，露出外层 pre 的底色 */
+  padding: 0; /* 归零，由 pre 控制间距 */
+}
+
+/* 引用块（> 引用）左侧加一条竖线，灰蓝色文字 */
+.markdown-body blockquote {
+  border-left: 3px solid #14b8a6; /* 青绿色左边线，醒目但不刺眼 */
+  padding-left: 0.75rem; /* 文字与左边线留间距 */
+  color: #475569; /* 引用文字用偏灰的中性色 */
+}
+
+/* 表格外层包裹：超宽时可横向滚动，避免撑破页面 */
+.markdown-table-wrap {
+  max-width: 100%; /* 不超过父容器宽度 */
+  overflow-x: auto; /* 横向溢出时出现滚动条 */
+}
+
+/* 表格本体样式 */
+.markdown-body table {
+  min-width: 100%; /* 至少占满容器宽度 */
+  border-collapse: collapse; /* 边框合并，避免双边线 */
+  font-size: 0.88rem; /* 表格字号略小 */
+  line-height: 1.55; /* 行高适中，方便阅读 */
+}
+
+/* 表头与单元格统一边框、内边距、左对齐、顶部对齐 */
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid #dde5ea; /* 浅灰蓝网格线 */
+  padding: 0.45rem 0.6rem; /* 单元格内边距 */
+  text-align: left; /* 文字左对齐 */
+  vertical-align: top; /* 内容靠上对齐 */
+}
+
+/* 表头：浅青底、主文字色、加粗 */
+.markdown-body th {
+  background: #f3f7f8; /* 极浅青底，区分表头与正文 */
+  color: #17212b; /* 表头文字色 */
+  font-weight: 700; /* 加粗 */
+}
+
+/* 隔行变色：偶数行用暖白底，方便长表格逐行阅读（斑马纹效果） */
+.markdown-body tr:nth-child(even) td {
+  background: #fbf7f2;
+}
